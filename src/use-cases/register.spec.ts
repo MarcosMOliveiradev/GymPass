@@ -1,16 +1,19 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcrypt'
 import { InMemoryUsersRpository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
+let usersRepository: InMemoryUsersRpository
+let sut: RegisterUseCase
 describe('Register Use Case', () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUsersRpository()
+    sut = new RegisterUseCase(usersRepository)
+  })
   // Testa se a senha foi criptografada
   it('should hash user password upon registration', async () => {
-    const usersRepository = new InMemoryUsersRpository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
-
-    const { user } = await registerUseCase.execute({
+    const { user } = await sut.execute({
       nome: 'Marcos',
       email: 'marcos@marcos22.com',
       password: '123456',
@@ -26,19 +29,16 @@ describe('Register Use Case', () => {
 
   // testa se o email ja existe
   it('should not be able to register with same email twice', async () => {
-    const usersRepository = new InMemoryUsersRpository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
-
     const email = 'marcos@marcos.com'
 
-    await registerUseCase.execute({
+    await sut.execute({
       nome: 'Marcos',
       email,
       password: '123456',
     })
 
     await expect(() =>
-      registerUseCase.execute({
+      sut.execute({
         nome: 'Marcos',
         email,
         password: '123456',
@@ -48,10 +48,7 @@ describe('Register Use Case', () => {
 
   // testa se o usuario foi criado
   it('should be albe to register', async () => {
-    const usersRepository = new InMemoryUsersRpository()
-    const registerUseCase = new RegisterUseCase(usersRepository)
-
-    const { user } = await registerUseCase.execute({
+    const { user } = await sut.execute({
       nome: 'Marcos',
       email: 'marcos@marcos22.com',
       password: '123456',
