@@ -3,8 +3,10 @@ import { InMemoryUsersRpository } from '@/repositories/in-memory/in-memory-users
 import { AuthenticateUseCase } from './authenticate'
 import { hash } from 'bcrypt'
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
+
 let usersRepository: InMemoryUsersRpository
 let SUT: AuthenticateUseCase
+
 describe('Authenticate Use Case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRpository()
@@ -33,7 +35,7 @@ describe('Authenticate Use Case', () => {
       password_hash: await hash('123456', 6),
     })
 
-    expect(() =>
+    await expect(() =>
       SUT.execute({
         email: 'marcos@marcos22.com',
         password: '123123',
@@ -43,7 +45,7 @@ describe('Authenticate Use Case', () => {
 
   // senha incorreta
   it('should not be albe to Authentication with wrong password', async () => {
-    expect(() =>
+    await expect(() =>
       SUT.execute({
         email: 'marcos@marcos22.com',
         password: '123456',

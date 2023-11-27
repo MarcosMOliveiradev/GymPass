@@ -5,15 +5,17 @@ import { GetUserProfileUseCase } from './get-user-profile'
 import { ResourceNotFoundError } from './errors/ResourceNotFoundError'
 let usersRepository: InMemoryUsersRpository
 let SUT: GetUserProfileUseCase
+
 describe('Get User Profile Use Case', () => {
   beforeEach(() => {
     usersRepository = new InMemoryUsersRpository()
     SUT = new GetUserProfileUseCase(usersRepository)
   })
-  it('should be albe to get user profile', async () => {
+
+  it('should be able to get user profile', async () => {
     const createdUser = await usersRepository.create({
-      nome: 'Marcos Monteiro',
-      email: 'marcos@marcos22.com',
+      nome: 'John Doe',
+      email: 'johndoe@example.com',
       password_hash: await hash('123456', 6),
     })
 
@@ -21,11 +23,11 @@ describe('Get User Profile Use Case', () => {
       userId: createdUser.id,
     })
 
-    expect(user.nome).toEqual('Marcos Monteiro')
+    expect(user.nome).toEqual('John Doe')
   })
 
   it('should not be albe to get user profile with wrong id', async () => {
-    expect(() =>
+    await expect(() =>
       SUT.execute({
         userId: 'non-existing-id',
       }),
