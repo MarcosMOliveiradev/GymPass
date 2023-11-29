@@ -1,14 +1,27 @@
 import { expect, describe, it, beforeEach, vi, afterEach } from 'vitest'
 import { InMemoryCheckInRpository } from '@/repositories/in-memory/in-memory-check-in-repository'
 import { CheckinUseCase } from './check-in'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { Decimal } from '@prisma/client/runtime/library'
 
 let checkInsRepository: InMemoryCheckInRpository
+let gymsRepository: InMemoryGymsRepository
 let sut: CheckinUseCase
 
 describe('Checkin Use Case', () => {
   beforeEach(() => {
     checkInsRepository = new InMemoryCheckInRpository()
-    sut = new CheckinUseCase(checkInsRepository)
+    gymsRepository = new InMemoryGymsRepository()
+    sut = new CheckinUseCase(checkInsRepository, gymsRepository)
+
+    gymsRepository.itens.push({
+      id: 'gym_id 01',
+      title: 'asdas',
+      description: '',
+      phone: '',
+      latitude: new Decimal(0),
+      longitude: new Decimal(0),
+    })
 
     vi.useFakeTimers()
   })
@@ -22,6 +35,8 @@ describe('Checkin Use Case', () => {
     const { checkIn } = await sut.execute({
       gymId: 'gym_id 01',
       userId: 'user_is 01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
@@ -33,12 +48,16 @@ describe('Checkin Use Case', () => {
     await sut.execute({
       gymId: 'gym_id 01',
       userId: 'user_is 01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     await expect(() => {
       sut.execute({
         gymId: 'gym_id 01',
         userId: 'user_is 01',
+        userLatitude: 0,
+        userLongitude: 0,
       })
     }).rejects.toBeInstanceOf(Error)
   })
@@ -49,12 +68,16 @@ describe('Checkin Use Case', () => {
     await sut.execute({
       gymId: 'gym_id 01',
       userId: 'user_is 01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0))
     const { checkIn } = await sut.execute({
       gymId: 'gym_id 01',
       userId: 'user_is 01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
