@@ -2,7 +2,6 @@ import { Prisma, CheckIn } from '@prisma/client'
 import { CheckInRepository } from '../checkin-repository'
 import { randomUUID } from 'node:crypto'
 import dayjs from 'dayjs'
-import { GetResult } from '@prisma/client/runtime/library'
 
 export class InMemoryCheckInRpository implements CheckInRepository {
   public items: CheckIn[] = []
@@ -29,6 +28,10 @@ export class InMemoryCheckInRpository implements CheckInRepository {
     return this.items
       .filter((item) => item.user_id === userId)
       .slice((page - 1) * 20, page * 20)
+  }
+
+  async coutByUserId(userId: string) {
+    return this.items.filter((item) => item.user_id === userId).length
   }
 
   async create(data: Prisma.CheckInUncheckedCreateInput) {
