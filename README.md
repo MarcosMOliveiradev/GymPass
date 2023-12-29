@@ -1,5 +1,16 @@
 GymPass style app.
 
+O GymPass é um projeto desenvolvido durante o curso Ignite da Rocketseat, utilizando padrões de projeto como SOLID, técnicas de TDD e abordando temas essenciais para sistemas web. O software oferece uma plataforma para cadastrar academias e usuários, com validações robustas. Destaca-se pela implementação eficaz de autenticação e refresh tokens, proporcionando segurança aos usuários.
+
+**Recursos Principais:**
+- Gestão de Usuários: Funcionalidades específicas para que os usuários possam interagir com as academias cadastradas.
+- Autenticação Segura: Implementação de um sistema de autenticação robusto, garantindo a segurança das informações.
+- Refresh Tokens: Uso de refresh tokens para manter a autenticação ativa de maneira segura.
+
+**Benefícios:**
+- Segurança Avançada: Implementação cuidadosa de autenticação e uso de refresh tokens.
+- Testes Unitários e End to End: Garantia da integridade e funcionalidade do sistema.
+
 ## RF (Requisitos funcionais)
 
 - [x] Deve ser possivel se cadastrar;
@@ -19,12 +30,12 @@ GymPass style app.
 - [x] O usuário não pode fazer 2 check-in no mesmo dia;
 - [x] O usuário não pode fazer check-in se não estiver perto (100m) da academia;
 - [x] O check-in só pode ser validado ate 20 min após criado;
-- [ ] O check-in só pode ser validado por adm;
-- [ ] A academia só poder ser cadastrada por adm;
+- [x] O check-in só pode ser validado por adm;
+- [x] A academia só poder ser cadastrada por adm;
 
 ## RNFs (requisitos não-funcionais)
 
 - [x] A senha do usuário precisa estar criptografada;
 - [x] Os dados da aplicação precisa estar persistidos em bancos PstegreSQL;
 - [x] Todas listas de dados precisam estar paginadas com 20 itens por página;
-- [ ] O usuário dever ser identificado por um JWT (JSON WEN TOKEN)
+- [x] O usuário dever ser identificado por um JWT (JSON WEN TOKEN)
